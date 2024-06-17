@@ -4,12 +4,19 @@
 
 int main(int ac, char **av)
 {
+	t_table	*table;
+
+	table = (t_table *)malloc(sizeof(t_table));
+	if (!table)
+		return (1);
 	if (check_input(ac, av))
 			return (EXIT_FAILURE);
 	++av;
-	if (init_all(av))
+	if (init_all(ac, av, table))
 			return (1);
-	printf("%d\n", philo_atoi(av[1]));
+	if (start_eat(table))
+		return (1);
+	printf("%d\n", table->nbr_philo);
 		
 }
 
