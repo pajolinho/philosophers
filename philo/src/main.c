@@ -14,8 +14,6 @@ int main(int ac, char **av)
 	++av;
 	if (init_all(ac, av, table))
 			return (1);
-	if (start_eat(table))
-		return (1);
 	printf("%d\n", table->nbr_philo);
 		
 }

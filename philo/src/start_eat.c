@@ -1,11 +1,26 @@
 #include "../inc/philo.h"
 #include <sys/time.h>
+#include <pthread.h>
 
-size_t	start_eat(t_table *table)
+int	init_threading(t_philo **philos)
 {
-	struct timeval	time;
+	t_table	*table;
+	int		i;
 
-	if (gettimeofday(&time, NULL) == -1)
-		return (1);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	i = philos[0]->table->nbr_philo;
+	while (i > 0)
+	{
+		pthread_create(philos[i]->thread, NULL, *eat_rules, philos[i]);
+		i--;
+	}
+	return (0);
+}
+
+int	eat_rules(t_philo *philo)
+{
+
+}
+int	start_eat(t_philo *philo)
+{
+	pthread_mutex_lock()
 }

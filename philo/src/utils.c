@@ -1,5 +1,5 @@
 #include "../inc/philo.h"
-
+#include <aio.h>
 int	philo_atoi(char *str)
 {
 	int	negativ;
@@ -18,4 +18,13 @@ int	philo_atoi(char *str)
 	while (*str >= '0' && *str <= '9')
 		nbr = nbr * 10 +  (*str++ - '0');
 	return (nbr * negativ);
+}
+
+size_t	get_time_of_the_day(t_table *table)
+{
+	struct timeval	time;
+
+	if (gettimeofday(&time, NULL) == -1)
+		return (1);
+	return (time.tv_sec * 1000 + time.tv_usec / 1000);
 }

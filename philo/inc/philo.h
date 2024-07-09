@@ -21,6 +21,7 @@ typedef struct s_philo
 	int				right_fork_id;
 	int				left_fork_id;
 	struct s_table	*table;
+	pthread_mutex_t	*forks;
 }	t_philo;
 
 typedef struct s_table
@@ -38,4 +39,5 @@ int	check_input(int ac, char **av);
 int	philo_atoi(char *str);
 int init_all(int ac, char **av, t_table *table);
 size_t  start_eat(t_table *table);
+int	init_threading(t_philo **philos);
 #endif
