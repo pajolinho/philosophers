@@ -25,9 +25,11 @@ static int	init_philo(char **av, t_table *table, t_philo **philo)
 		if (!philo[i])
 			return (1);
 		philo[i]->id = i;
+		philo[i]->old_time = get_current_time();
 		philo[i]->meals_eaten = 0;
 		philo[i]->status = THINKING;
 		philo[i]->table = table;
+		philo[i]->philos = philo;
 		philo[i]->right_fork_id = i;
 		philo[i]->left_fork_id = (i + 1) % table->nbr_philo;
 		pthread_mutex_init(&forks[i], NULL);
@@ -48,7 +50,6 @@ int	init_all(int ac, char **av, t_table *table)
 	philo = (t_philo **)malloc(sizeof(t_philo *) * table->nbr_philo);
 	if (init_philo(av, table, philo))
 		return (1);
-	if (init_threading(philo))
-		return (1);
+	table->philos = philo;
 	return (0);
-42 projekt guide}
+}

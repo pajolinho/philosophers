@@ -5,7 +5,7 @@
 int main(int ac, char **av)
 {
 	t_table	*table;
-
+	
 	table = (t_table *)malloc(sizeof(t_table));
 	if (!table)
 		return (1);
@@ -14,7 +14,7 @@ int main(int ac, char **av)
 	++av;
 	if (init_all(ac, av, table))
 			return (1);
-	printf("%d\n", table->nbr_philo);
-		
+	if (init_threading(table->philos))
+		return (1);
 }
 
