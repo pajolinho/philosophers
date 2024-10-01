@@ -18,22 +18,25 @@ typedef struct s_philo
 	unsigned int	id;
 	pthread_t		thread;
 	struct s_philo	**philos;
-	unsigned int	meals_eaten;
-	t_status		status;
+	int	meals_eaten;
+	//t_status		status;
 	int				right_fork_id;
 	int				left_fork_id;
 	struct s_table	*table;
-	size_t			old_time;
-	pthread_mutex_t	time_lock;
+	long long			old_time;
+	long long			last_eaten;
 	pthread_mutex_t	*forks;
 }	t_philo;
 
 typedef struct s_table
 {
+	pthread_mutex_t	meal_lock;
+	int				died;
+	int				all_ate;
 	int				nbr_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	time_t				time_to_sleep;
+	long long			time_to_die;
+	long long		time_to_eat;
+	long long		time_to_sleep;
 	int				must_eat;
 	struct s_philo	**philos;
 
@@ -43,6 +46,8 @@ int	check_input(int ac, char **av);
 int	philo_atoi(char *str);
 int init_all(int ac, char **av, t_table *table);
 int	init_threading(t_philo **philos);
-size_t  get_current_time(void);
+void    let_philo_sleep(t_table *table, long long sleep_time);
+long long  get_current_time(void);
 void	write_update(t_philo *philo, char *string);
+long long	time_diff(long long past, long long pres);
 #endif

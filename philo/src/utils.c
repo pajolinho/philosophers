@@ -11,6 +11,8 @@ int	philo_atoi(char *str)
 
 	nbr = 0;
 	negativ = 1;
+	if (!str)
+		return (-1);
 	while (*str == ' ' || (*str > 8 && *str < 14))
 		++str;
 	while (*str == '-' || *str == '+')
@@ -24,12 +26,13 @@ int	philo_atoi(char *str)
 	return (nbr * negativ);
 }
 
-static size_t	time_diff(size_t past, size_t pres)
+long long time_diff(long long past, long long pres)
 {
+
 	return (pres - past);
 }
 
-size_t	get_current_time(void)
+long long	get_current_time(void)
 {
 	struct timeval	time;
 
@@ -38,35 +41,23 @@ size_t	get_current_time(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-int p_strcmp(const char *string1, const char *string2)
+void	let_philo_sleep(t_table *table, long long sleep_time)
 {
-    while (*string1 && (*string1 == *string2))
-    {
-        string1++;
-        string2++;
-    }
-     if (*string1 == '\0' && *string2 == '\0')
-        return (1);
-    else
-        return (0);
-}
-
-void	let_philo_sleep(t_philo *philo, time_t sleep_time)
-{
-
-	sleep_time += get_current_time();
-	while (get_current_time() < sleep_time)
-		usleep(100);	
+	long long	time;
+	if (table->died == 1)
+	{
+		time = sleep_time * 1000;
+		usleep(time);
+	}
 }
 
 void	write_update(t_philo *philo, char *string)
 {
-	size_t	new_time;
-	size_t	time;
-	
-	new_time = get_current_time();
-	time = time_diff(philo->old_time, new_time);
-	printf("%s%zu %d %s\n", GRN, get_current_time() - philo->old_time, philo->id + 1, string);
+	t_table	*table;
 
-//	philo->old_time = get_current_time();
+	table = philo->table;
+	if (table->died == 1)
+	{
+		printf("%s%lld %d %s\n", GRN, get_current_time() - philo->old_time, philo->id + 1, string);
+	}
 }

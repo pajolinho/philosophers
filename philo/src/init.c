@@ -3,10 +3,17 @@
 
 static int init_table(char **av, t_table *table)
 {
+	table->died = 1;
 	table->nbr_philo = philo_atoi(av[0]);
 	table->time_to_die = philo_atoi(av[1]);
 	table->time_to_eat = philo_atoi(av[2]);
+	table->all_ate = 0;
 	table->time_to_sleep = philo_atoi(av[3]);
+	if (philo_atoi(av[4]) == -1)
+		table->must_eat = -1;
+	else
+		table->must_eat = philo_atoi(av[4]);
+	
 	return (0);
 }
 
@@ -27,7 +34,6 @@ static int	init_philo(char **av, t_table *table, t_philo **philo)
 		philo[i]->id = i;
 		philo[i]->old_time = get_current_time();
 		philo[i]->meals_eaten = 0;
-		philo[i]->status = THINKING;
 		philo[i]->table = table;
 		philo[i]->philos = philo;
 		philo[i]->right_fork_id = i;
@@ -43,8 +49,6 @@ int	init_all(int ac, char **av, t_table *table)
 {
 	t_philo	**philo;
 
-	if (ac == 6)
-		table->must_eat = philo_atoi(av[4]);
 	if (init_table(av, table))
 		return (1);
 	philo = (t_philo **)malloc(sizeof(t_philo *) * table->nbr_philo);
