@@ -1,7 +1,7 @@
 #include "../inc/philo.h"
 #include <stdlib.h>
 
-static int init_table(char **av, t_table *table)
+static int	init_table(char **av, t_table *table)
 {
 	table->died = 1;
 	table->nbr_philo = philo_atoi(av[0]);
@@ -9,22 +9,25 @@ static int init_table(char **av, t_table *table)
 	table->time_to_eat = philo_atoi(av[2]);
 	table->all_ate = 0;
 	table->time_to_sleep = philo_atoi(av[3]);
+	pthread_mutex_init(&(table->meal_lock), NULL);
+	pthread_mutex_init(&(table->write_lock), NULL);
 	if (philo_atoi(av[4]) == -1)
 		table->must_eat = -1;
 	else
 		table->must_eat = philo_atoi(av[4]);
-	
 	return (0);
 }
 
 //av wegstreichen wenn nicht gebraucht
 static int	init_philo(char **av, t_table *table, t_philo **philo)
 {
-	int	i;
+	int				i;
 	pthread_mutex_t	*forks;
-	forks = (pthread_mutex_t *)malloc((table->nbr_philo + 1) * sizeof(pthread_mutex_t));
+
+	forks = (pthread_mutex_t *)malloc((table->nbr_philo + 1)
+			* sizeof(pthread_mutex_t));
 	if (!forks)
-		return (NULL);
+		return (1);
 	i = 0;
 	while (i < table->nbr_philo)
 	{

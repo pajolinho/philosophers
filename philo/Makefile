@@ -5,7 +5,7 @@ CC := cc
 #TODO: add back flags
 #CFLAGS :=  -Wextra -Wall -Werror -I./includes -g
 CFLAGS :=  -I./includes -g
-LINKFLAGS := -pthread
+LINKFLAGS := -pthread -fsanitize=address
 
 SRCS := src/init.c src/main.c src/parsing.c src/utils.c src/start_eat.c
 OBJDIR := obj

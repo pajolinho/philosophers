@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <stdlib.h>
 
 int	philo_atoi(char *str)
 {
@@ -22,13 +23,12 @@ int	philo_atoi(char *str)
 		++str;
 	}
 	while (*str >= '0' && *str <= '9')
-		nbr = nbr * 10 +  (*str++ - '0');
+		nbr = nbr * 10 + (*str++ - '0');
 	return (nbr * negativ);
 }
 
-long long time_diff(long long past, long long pres)
+long long	time_diff(long long past, long long pres)
 {
-
 	return (pres - past);
 }
 
@@ -44,10 +44,12 @@ long long	get_current_time(void)
 void	let_philo_sleep(t_table *table, long long sleep_time)
 {
 	long long	time;
+
+	time = get_current_time();
 	if (table->died == 1)
 	{
-		time = sleep_time * 1000;
-		usleep(time);
+		while (time + sleep_time > get_current_time())
+			usleep(10);
 	}
 }
 
@@ -56,8 +58,11 @@ void	write_update(t_philo *philo, char *string)
 	t_table	*table;
 
 	table = philo->table;
+	pthread_mutex_lock(&table->write_lock);
 	if (table->died == 1)
 	{
-		printf("%s%lld %d %s\n", GRN, get_current_time() - philo->old_time, philo->id + 1, string);
+		printf("%s%lld %d %s%s\n", GRN, get_current_time() - philo->old_time,
+			philo->id + 1, string, "\033[0m");
 	}
+	pthread_mutex_unlock(&table->write_lock);
 }
